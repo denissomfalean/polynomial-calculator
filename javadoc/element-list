@@ -1,0 +1,8 @@
+module:com.denissomfalean.polynomialcalculator
+com.denissomfalean.polynomialcalculator
+com.denissomfalean.polynomialcalculator.constants
+com.denissomfalean.polynomialcalculator.controllers
+com.denissomfalean.polynomialcalculator.models
+com.denissomfalean.polynomialcalculator.service
+com.denissomfalean.polynomialcalculator.utils
+com.denissomfalean.polynomialcalculator.views
