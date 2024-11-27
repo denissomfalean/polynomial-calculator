@@ -1,8 +1,9 @@
 package com.denissomfalean.polynomialcalculator.service;
 
+import static com.denissomfalean.polynomialcalculator.utils.CalculatorUtils.*;
+
 import com.denissomfalean.polynomialcalculator.models.Monomial;
 import com.denissomfalean.polynomialcalculator.models.Polynomial;
-import com.denissomfalean.polynomialcalculator.utils.CalculatorUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class CalculatorService {
+
+  public static final Polynomial ZERO_POLYNOMIAL = new Polynomial(new Monomial(0, 0));
+
   public static Polynomial addition(Polynomial firstPolynomial, Polynomial secondPolynomial) {
     Polynomial result = new Polynomial();
     for (Monomial monomial : firstPolynomial.getMonomials()) {
@@ -63,14 +67,12 @@ public class CalculatorService {
     Polynomial reminder = firstPolynomial.deepCopy();
 
     do {
-      int degree = CalculatorUtils.getDivisionDegree(reminder, secondPolynomial);
-      int coefficient = CalculatorUtils.getDivisionCoefficient(reminder, secondPolynomial);
+      int degree = getDivisionDegree(reminder, secondPolynomial);
+      int coefficient = getDivisionCoefficient(reminder, secondPolynomial);
       result.addMonomial(new Monomial(coefficient, degree));
 
-      reminder =
-          CalculatorUtils.getNewReminder(
-              reminder, secondPolynomial, new Monomial(coefficient, degree));
-    } while ((CalculatorUtils.isDegreeBigger(reminder, secondPolynomial)));
+      reminder = getNewReminder(reminder, secondPolynomial, new Monomial(coefficient, degree));
+    } while (reminder.equals(ZERO_POLYNOMIAL) && (isDegreeBigger(reminder, secondPolynomial)));
 
     log.info("Result for DIVISION QUOTIENT is {}", result);
     return result;
@@ -80,8 +82,8 @@ public class CalculatorService {
     Polynomial reminder = firstPolynomial.deepCopy();
 
     do {
-      reminder = CalculatorUtils.getNewReminder(reminder, secondPolynomial);
-    } while ((CalculatorUtils.isDegreeBigger(reminder, secondPolynomial)));
+      reminder = getNewReminder(reminder, secondPolynomial);
+    } while (reminder.equals(ZERO_POLYNOMIAL) && (isDegreeBigger(reminder, secondPolynomial)));
 
     log.info("Result for DIVISION REST is {}", reminder);
     return reminder;

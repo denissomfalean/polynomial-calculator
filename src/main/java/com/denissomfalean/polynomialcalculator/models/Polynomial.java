@@ -2,6 +2,7 @@ package com.denissomfalean.polynomialcalculator.models;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -24,8 +25,12 @@ public class Polynomial {
 
   public Polynomial(Monomial... monomials) {
     for (Monomial monomial : monomials) {
-      this.addMonomial(monomial);
+      if (monomial.getCoefficient() != 0) {
+        this.addMonomial(monomial);
+      }
     }
+
+    checkForZeroValue();
   }
 
   public static Polynomial fromString(String polynomialString) {
@@ -86,6 +91,16 @@ public class Polynomial {
     return !stringBuilder.isEmpty()
         ? stringBuilder.substring(0, stringBuilder.length() - 3)
         : EMPTY;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (object == null || getClass() != object.getClass()) return false;
+
+    Polynomial polynomial = (Polynomial) object;
+
+    return Objects.equals(monomials, polynomial.monomials);
   }
 
   private static void addConstantTermToPolynomial(Polynomial polynomial, Matcher matcher) {
